@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.GroundOverlay;
@@ -103,13 +106,33 @@ public class MapsFragment extends Fragment {
                 }
             });
 
+            //Add Circle
+            // Instantiates a new CircleOptions object and defines the center and radius
+            LatLng perth = new LatLng(-31.953570, 115.856978);
+            Circle circle = googleMap.addCircle(new CircleOptions()
+                    .center(perth)
+                    .radius(100000)
+                    .strokeWidth(10)
+                    .strokeColor(Color.GREEN)
+                    .fillColor(Color.argb(40, 255, 0, 0))
+                    .clickable(true));
+
+            googleMap.setOnCircleClickListener(new GoogleMap.OnCircleClickListener() {
+                @Override
+                public void onCircleClick(Circle circle) {
+                    // Flip the r, g and b components of the circle's
+                    // stroke color.
+                    int strokeColor = circle.getStrokeColor() ^ 0x00ffffff;
+                    circle.setStrokeColor(strokeColor);
+                }
+            });
+
             //Add Overlay
             LatLng operahouse = new LatLng(-33.856732, 151.215227);
             GroundOverlay sydneyGroundOverlay = googleMap.addGroundOverlay(new GroundOverlayOptions()
                     .image(BitmapDescriptorFactory.fromResource(R.drawable.operahouse))
                     .position(operahouse, 600f)
                     .clickable(true));
-
             sydneyGroundOverlay.setTag("Sydney");
         }
     };
