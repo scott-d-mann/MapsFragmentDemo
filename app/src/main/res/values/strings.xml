@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MapsFragmentDemo</string>
+    <string name="google_map">Google Map</string>
+</resources>
